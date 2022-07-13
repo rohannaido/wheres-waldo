@@ -42,6 +42,19 @@
   width: 100%;
 }
 
+.game-image-div table{
+  /* border: 1px solid black; */
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  border-spacing: 0;
+}
+
+.game-image-div table td{
+  /* border: 1px solid black; */
+}
+
 footer{
   height: 50px;
   background-color: black;

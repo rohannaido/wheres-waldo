@@ -3,18 +3,34 @@ import './App.css';
 import Dropdown from './components/Dropdown';
 import Selection from './components/Selection';
 import StartGame from './components/StartGame';
-// import waldo from './images/waldo.jpg'
-// import wal
 
 function App() {
 
+  const tableArr = [];
+  let i = 1
+  while(i <= 36){
+    tableArr.push(i);
+    i++;
+  }
+
   const [startGameDisplay, setStartGameDisplay] = useState(false);
   const [showSelection, setShowSelection] = useState({show: false, x: 56, y: 0});
+  const [tableSelection, setTableSelection] = useState({row: 0, col: 0});
 
   const imageClickHandler = (e) => {
-    // console.log(e);
     setShowSelection({...showSelection,show: true, x: e.pageX - 32, y: e.pageY - 120})
-    console.log(e.pageX + " : " + e.pageY);
+  }
+
+  const clickTableCell = (e) => {
+    setTableSelection({row: +e.target.dataset.row, col: +e.target.dataset.col});
+  }
+
+  const checkCharacter = (character, row, col) => {
+    if(character === "waldo"){
+      if((col >=19 && col <= 20) && (row >=17 &&  row <= 19)){
+        console.log("CORECNT WALDO");
+      }
+    }
   }
 
   return (
@@ -47,7 +63,15 @@ function App() {
 
       <div className='game-image-div' onClick={(e) => imageClickHandler(e)}>
         <img src='./images/level-1.jpg' />
-        {showSelection.show && <Dropdown showSelection={showSelection}/>}
+        <table>
+          {tableArr.map((i) => 
+          <tr>
+            {tableArr.map((j) => <td data-row={i} data-col={j} onClick={clickTableCell}></td>)}
+          </tr>)
+          }
+        </table>
+        {showSelection.show && <Dropdown showSelection={showSelection} setShowSelection={setShowSelection} 
+        checkCharacter={checkCharacter} tableSelection={tableSelection} />}
         {showSelection.show && <Selection showSelection={showSelection}/>}
       </div>
       <footer>
