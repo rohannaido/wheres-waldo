@@ -1,11 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Dropdown from './components/Dropdown';
 import Selection from './components/Selection';
 import StartGame from './components/StartGame';
 import GameOver from './components/GameOver';
 
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  getDoc,
+  doc,
+} from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAgD5-5AO16kdGHyWMKfH-aTJvvyiQpmi4",
+  authDomain: "wheres-waldo-fe518.firebaseapp.com",
+  projectId: "wheres-waldo-fe518",
+  storageBucket: "wheres-waldo-fe518.appspot.com",
+  messagingSenderId: "628554283148",
+  appId: "1:628554283148:web:eb7f1916d076daeeb7a3a9"
+};
+
+initializeApp(firebaseConfig);
+
+
+const getWaldoData = async () => {
+  const docRef = doc(getFirestore(), "correctLocation", "waldo");
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    console.log("No such document!");
+  }
+}
+
 function App() {
+
+  useEffect(() => {
+    const populateWaldoData = async () => {
+    const data = await getWaldoData();
+    setWaldoData(data);
+    }
+    populateWaldoData();
+  }, []);
+
+  const [waldoData, setWaldoData] = useState({});
 
   const tableArr = [];
   let i = 1
@@ -31,7 +71,8 @@ function App() {
   }
 
   const checkCharacter = (character, row, col) => {
-    if((character === "waldo") && (col >=19 && col <= 20) && (row >=17 &&  row <= 19)){
+    // if((character === "waldo") && (col >=19 && col <= 20) && (row >=17 &&  row <= 19)){
+    if((character === "waldo") && (col >=waldoData.col1 && col <= waldoData.col2) && (row >=waldoData.row1 &&  row <= waldoData.row2)){
       setCharactersArr((prev) => {
         prev[prev.map((item) => item.name).indexOf("waldo")].found = true;
         return prev;
