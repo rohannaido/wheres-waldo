@@ -3,10 +3,15 @@
     flex-direction: column;
     border: 1px solid black;
     width: 75px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: whitesmoke;
 }
 
 .dropdown-item-div{
     padding: 0.25rem;
+    cursor: pointer;
 }
 
 .dropdown-item-div:hover {

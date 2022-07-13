@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import './App.css';
 import Dropdown from './components/Dropdown';
+import Selection from './components/Selection';
 import StartGame from './components/StartGame';
 // import waldo from './images/waldo.jpg'
 // import wal
 
 function App() {
 
-  const [startGameDisplay, setStartGameDisplay] = useState(true);
+  const [startGameDisplay, setStartGameDisplay] = useState(false);
+  const [showSelection, setShowSelection] = useState({show: false, x: 56, y: 0});
+
+  const imageClickHandler = (e) => {
+    // console.log(e);
+    setShowSelection({...showSelection,show: true, x: e.pageX - 32, y: e.pageY - 120})
+    console.log(e.pageX + " : " + e.pageY);
+  }
 
   return (
     <div className="App">
@@ -36,8 +44,11 @@ function App() {
         </div>
       </div>
 
-      <div className='game-image-div'>
+
+      <div className='game-image-div' onClick={(e) => imageClickHandler(e)}>
         <img src='./images/level-1.jpg' />
+        {showSelection.show && <Dropdown showSelection={showSelection}/>}
+        {showSelection.show && <Selection showSelection={showSelection}/>}
       </div>
       <footer>
         Copyright © 2022 rohannaido 
