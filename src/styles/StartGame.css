@@ -1,0 +1,33 @@
+.start-game-div{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+}
+
+.start-game-items-div{
+    position: fixed;
+    top: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: black;
+}
+
+h1.start-game-text{
+    margin: 1rem;
+    font-size: 42px;
+    color: white;
+}
+
+.start-game-btn{
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}

@@ -1,0 +1,14 @@
+.dropdown-div{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 75px;
+}
+
+.dropdown-item-div{
+    padding: 0.25rem;
+}
+
+.dropdown-item-div:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
