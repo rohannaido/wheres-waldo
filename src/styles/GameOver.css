@@ -1,0 +1,30 @@
+.game-over-div{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+}
+
+.game-over-items-div{
+    position: fixed;
+    top: 50vh;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: black;
+    transform: translateY(-50%);
+    height: 200px;
+    width: 400px;
+}
+
+h1.game-over-text{
+    margin: 1rem;
+    font-size: 32px;
+    color: white;
+    text-align: center;
+}

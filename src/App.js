@@ -3,6 +3,7 @@ import './App.css';
 import Dropdown from './components/Dropdown';
 import Selection from './components/Selection';
 import StartGame from './components/StartGame';
+import GameOver from './components/GameOver';
 
 function App() {
 
@@ -14,8 +15,12 @@ function App() {
   }
 
   const [startGameDisplay, setStartGameDisplay] = useState(false);
-  const [showSelection, setShowSelection] = useState({show: false, x: 56, y: 0});
+  const [showSelection, setShowSelection] = useState({show: false, x: 0, y: 0});
   const [tableSelection, setTableSelection] = useState({row: 0, col: 0});
+  const [charactersArr, setCharactersArr] = useState([
+    {name: "waldo", found: false}, 
+    {name: "odlaw", found: false}, 
+    {name: "wizard", found: false}]);
 
   const imageClickHandler = (e) => {
     setShowSelection({...showSelection,show: true, x: e.pageX - 32, y: e.pageY - 120})
@@ -26,11 +31,31 @@ function App() {
   }
 
   const checkCharacter = (character, row, col) => {
-    if(character === "waldo"){
-      if((col >=19 && col <= 20) && (row >=17 &&  row <= 19)){
-        console.log("CORECNT WALDO");
-      }
+    if((character === "waldo") && (col >=19 && col <= 20) && (row >=17 &&  row <= 19)){
+      setCharactersArr((prev) => {
+        prev[prev.map((item) => item.name).indexOf("waldo")].found = true;
+        return prev;
+      });
     }
+    else if((character === "odlaw") && (row >= 17 && row <= 20) && (col >=9 && col <=10)){
+      setCharactersArr((prev) => {
+        prev[prev.map((item) => item.name).indexOf("odlaw")].found = true;
+        return prev;
+      });
+    }
+    else if((character === "wizard") && (row >= 17 && row <=20) && (col >=23 && col <=24)){
+      setCharactersArr((prev) => {
+        prev[prev.map((item) => item.name).indexOf("wizard")].found = true;
+        return prev;
+      });
+    }
+  }
+
+  const hideCharacterIfFound = (characterName) => {
+    if(charactersArr[(charactersArr.map((item) => item.name)).indexOf(characterName)].found){
+      return 'found-character';
+    }
+    return '';
   }
 
   return (
@@ -38,21 +63,21 @@ function App() {
       <div className='game-info-div'>
         <div className='character-list'>
           
-          <div className='character-div'>
+          <div className={'character-div ' + hideCharacterIfFound("waldo")}>
             <div className='character-image-div'>
               <img src="./images/waldo.jpg" alt='waldo' />
             </div>
             <span className='character-name'>Waldo</span>
           </div>
-          <div className='character-div'>
+          <div className={'character-div ' + hideCharacterIfFound("odlaw")}>
             <div className='character-image-div'>
-              <img src="./images/odlaw.jpg" alt='waldo' />
+              <img src="./images/odlaw.jpg" alt='odlaw' />
             </div>
             <span className='character-name'>Odlaw</span>
           </div>
-          <div className='character-div'>
+          <div className={'character-div ' + hideCharacterIfFound("wizard")}>
             <div className='character-image-div'>
-              <img src='./images/wizard.jpg' alt='waldo' />
+              <img src='./images/wizard.jpg' alt='wizard' />
             </div>
             <span className='character-name'>Wizard</span>
           </div>
@@ -81,6 +106,7 @@ function App() {
         </a>
       </footer>
 
+      {!(charactersArr.filter((item) => item.found === false).length) && <GameOver />}
       {startGameDisplay && <StartGame setStartGameDisplay={setStartGameDisplay} />}
     </div>
   );
