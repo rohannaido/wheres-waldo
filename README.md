@@ -1,4 +1,4 @@
-# Where's Waldo game
+# Where's Waldo game 🧙‍♂️
 
 This is a React Application as part of The Odin Project curriculum.
 
