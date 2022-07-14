@@ -24,8 +24,8 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 
-const getWaldoData = async () => {
-  const docRef = doc(getFirestore(), "correctLocation", "waldo");
+const getCharacterData = async (characterName) => {
+  const docRef = doc(getFirestore(), "correctLocation", characterName);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -38,14 +38,19 @@ const getWaldoData = async () => {
 function App() {
 
   useEffect(() => {
-    const populateWaldoData = async () => {
-    const data = await getWaldoData();
-    setWaldoData(data);
+    const populateCharacterData = async (characterName) => {
+    const data = await getCharacterData(characterName);
+      setCharacterData((prev) => {
+        prev[characterName] = data;
+        return prev;
+      });
     }
-    populateWaldoData();
+    populateCharacterData("waldo");
+    populateCharacterData("odlaw");
+    populateCharacterData("wizard");
   }, []);
 
-  const [waldoData, setWaldoData] = useState({});
+  const [characterData, setCharacterData] = useState({ waldo : {}, odlaw : {}, wizard : {}});
 
   const tableArr = [];
   let i = 1
@@ -70,21 +75,24 @@ function App() {
     setTableSelection({row: +e.target.dataset.row, col: +e.target.dataset.col});
   }
 
+  const checkCharacterLocation = (characterName, row, col) => {
+    return (col >=characterData[characterName].col1 && col <= characterData[characterName].col2) && (row >=characterData[characterName].row1 &&  row <= characterData[characterName].row2)
+  } 
+
   const checkCharacter = (character, row, col) => {
-    // if((character === "waldo") && (col >=19 && col <= 20) && (row >=17 &&  row <= 19)){
-    if((character === "waldo") && (col >=waldoData.col1 && col <= waldoData.col2) && (row >=waldoData.row1 &&  row <= waldoData.row2)){
+    if((character === "waldo") && checkCharacterLocation("waldo", row, col)){
       setCharactersArr((prev) => {
         prev[prev.map((item) => item.name).indexOf("waldo")].found = true;
         return prev;
       });
     }
-    else if((character === "odlaw") && (row >= 17 && row <= 20) && (col >=9 && col <=10)){
+    else if((character === "odlaw") && checkCharacterLocation("odlaw", row, col)){
       setCharactersArr((prev) => {
         prev[prev.map((item) => item.name).indexOf("odlaw")].found = true;
         return prev;
       });
     }
-    else if((character === "wizard") && (row >= 17 && row <=20) && (col >=23 && col <=24)){
+    else if((character === "wizard") && checkCharacterLocation("wizard", row, col)){
       setCharactersArr((prev) => {
         prev[prev.map((item) => item.name).indexOf("wizard")].found = true;
         return prev;
@@ -128,7 +136,7 @@ function App() {
 
 
       <div className='game-image-div' onClick={(e) => imageClickHandler(e)}>
-        <img src='./images/level-1.jpg' />
+        <img src='https://firebasestorage.googleapis.com/v0/b/wheres-waldo-fe518.appspot.com/o/level-1.jpg?alt=media&token=36d29993-7cbe-4403-ac87-250a4f6dcdac' />
         <table>
           {tableArr.map((i) => 
           <tr>
